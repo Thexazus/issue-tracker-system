@@ -121,55 +121,145 @@ Permissions:
 
 ---
 
-## Demo Account
+## Overview
+
+IT Ticketing System is an internal web application designed to improve collaboration between **Quality Assurance (QA)**, **Developers**, and **Administrators** during the software development lifecycle.
+
+The application allows QA to report issues, administrators to manage and assign tickets, and developers to resolve reported issues while maintaining a complete activity history.
+
+This project was inspired by my internship experience, where communication between QA and developers played an important role in ensuring application quality.
+
+---
+
+## Features
+
+### Authentication
+
+- Secure Login
+- Role-based Access Control
+- Profile Management
+
+### Dashboard
+
+- Ticket Statistics
+- Recent Tickets
+- Recent Activities
+
+### Ticket Management
+
+- Create Ticket
+- Edit Ticket
+- Delete Ticket
+- Ticket Detail
+- Auto Generate Ticket Number
+
+### Assignment
+
+- Assign Ticket to Developer
+- Update Priority
+- Update Ticket Status
+
+### Collaboration
+
+- Comment System
+- Activity Log
+- Screenshot Upload
+
+### Search & Filter
+
+- Search by Ticket Number
+- Search by Title
+- Search by Description
+- Filter by Status
+- Filter by Priority
+- Filter by Assigned Developer
+
+### Others
+
+- Pagination
+- Responsive Layout
+- Form Validation
+- Flash Message
+- Soft Delete
+
+---
+
+## Tech Stack
+
+- Laravel 12
+- PHP 8.3
+- Bootstrap 5
+- MySQL
+- Blade
+- Eloquent ORM
+
+---
+
+## User Roles
 
 ### Administrator
 
-Email
+Responsible for managing the overall ticket workflow.
 
-```
-admin@novatech.local
-```
+Permissions:
 
-Password
-
-```
-password
-```
+- View all tickets
+- Create/Edit/Delete tickets
+- Assign developers
+- Update ticket status
+- Update ticket priority
+- View activity logs
 
 ---
 
 ### Developer
 
-Email
+Responsible for resolving assigned tickets.
 
-```
-developer@novatech.local
-```
+Permissions:
 
-Password
-
-```
-password
-```
+- View assigned tickets
+- Update ticket status
+- Add comments
+- Update personal profile
 
 ---
 
-### Quality Assurance
+### Quality Assurance (QA)
 
-Email
+Responsible for reporting and validating issues.
 
-```
-qa@novatech.local
-```
+Permissions:
 
-Password
-
-```
-password
-```
+- Create ticket
+- Upload screenshots
+- Edit own ticket
+- Verify bug fixes
+- Close/Reopen ticket
+- Add comments
 
 ---
+
+# Demo
+
+## Live Demo
+
+http://issuetracker.ifree.page
+
+## Demo Account
+
+To make the review process easier, the application provides a **Quick Demo Login** feature.
+
+Simply choose one of the available roles on the login page, and the system will automatically log in using a prepared demo account.
+
+Available roles:
+
+- 🛡️ Administrator
+- 👨‍💻 Developer
+- 🧪 Quality Assurance
+
+No email or password is required.
+
 
 ## Project Structure
 
@@ -231,8 +321,4 @@ php artisan serve
 
 ## Author
 
-Audrey Gracia Chandra
-
-Universitas Multimedia Nusantara
-
-Frontend Developer
+Rae a.k.a Audrey 
