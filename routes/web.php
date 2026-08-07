@@ -52,20 +52,31 @@ Route::get('/run-migration-deploy', function () {
 
 Route::get('/create-storage-link', function () {
     try {
-        $target = storage_path('app/public');
-        $link = public_path('storage');
-
-        if (file_exists($link)) {
-            return "The 'public/storage' link already exists.";
+        $dir = public_path('storage');
+        if (is_link($dir)) {
+            unlink($dir);
         }
-
-        if (symlink($target, $link)) {
-            return "Storage link created successfully using native PHP symlink!";
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
         }
-
-        return "Failed to create storage link.";
+        file_put_contents($dir . '/.htaccess', "<IfModule mod_rewrite.c>\n    RewriteEngine On\n    RewriteRule ^(.*)$ ../index.php [L]\n</IfModule>");
+        return "cPanel Asset Bridge configured successfully! Real folder public/storage is active.";
     } catch (\Exception $e) {
-        return "Error creating storage link: " . $e->getMessage();
+        return "Error creating asset bridge: " . $e->getMessage();
     }
 });
+
+Route::get('/storage/{path}', function ($path) {
+    $filePath = 'public/' . $path;
+
+    if (!\Illuminate\Support\Facades\Storage::disk('local')->exists($filePath)) {
+        abort(404);
+    }
+
+    $file = \Illuminate\Support\Facades\Storage::disk('local')->get($filePath);
+    $type = \Illuminate\Support\Facades\Storage::disk('local')->mimeType($filePath);
+
+    return response($file, 200)->header("Content-Type", $type);
+})->where('path', '.*');
+
 
