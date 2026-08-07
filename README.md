@@ -1,87 +1,238 @@
-# IT Ticketing System - Laravel 12 & Bootstrap 5
+# IT Ticketing System
 
-Sebuah sistem pelaporan bug, error, dan penugasan issue (IT Ticketing) yang dirancang untuk merampingkan kolaborasi antara Quality Assurance (QA), Developer, dan Administrator dalam tim pengembangan software.
-
-Proyek ini dibangun menggunakan **Laravel 12**, **PHP 8.3**, **SQLite (Zero-Configuration)**, dan **Bootstrap 5** dengan fokus pada standar penulisan kode bersih (*Clean Code*), prinsip *SOLID*, *Form Request Validation*, dan *Row-Level Security* berbasis peran (*Role-Based Access*).
+A web-based IT Ticketing System built with **Laravel 12** and **Bootstrap 5** to streamline issue reporting, assignment, and tracking within a software development team.
 
 ---
 
-## 🚀 Fitur Utama
-1. **Autentikasi & Otorisasi**: Login & logout terproteksi dengan pembatasan hak akses berbasis 3 Peran: **Admin**, **Developer**, dan **QA**.
-2. **Dashboard Dinamis**: Menampilkan statistik counter tiket (Open, In Progress, Resolved, Closed), ringkasan tiket terbaru, dan histori log aktivitas terkini yang disaring otomatis berdasarkan peran pengguna yang masuk.
-3. **CRUD Tiket dengan Auto-Number**: Manajemen siklus hidup tiket dari pelaporan awal (QA) hingga verifikasi selesai. Nomor tiket di-generate otomatis secara terenkapsulasi oleh Model dengan format: `TKT-YYYYMMDD-XXXX`.
-4. **Penyimpanan Bukti Screenshot**: Unggah bukti error berupa file gambar dengan validasi ukuran file maksimal 2MB dan pembersihan otomatis berkas sampah di storage saat tiket diperbarui atau dihapus.
-5. **Thread Diskusi (Comments)**: Kolaborasi tim secara real-time pada halaman detail tiket.
-6. **Search & Multi-Filter**: Pencarian tiket berdasarkan judul, deskripsi, atau nomor tiket, serta filter status dan prioritas yang bertahan saat berpindah halaman (*Pagination Query Retention*).
-7. **Audit Trail (Activity Log)**: Rekam jejak transparan yang mencatat detail mutasi tiket (pembuat, assignee baru, perubahan status lama ke baru, komentar) untuk keamanan audit sistem.
-8. **Pengaturan Profil**: Pengguna dapat mengubah nama lengkap, email unik, mengunggah foto profil kustom, dan memperbarui kata sandi secara aman.
+## Overview
+
+This application simulates an internal ticket management system used by software development teams to improve collaboration between Quality Assurance (QA), Developers, and Administrators.
+
+The system allows QA to report bugs, Administrators to manage and assign tickets, and Developers to resolve issues while maintaining a complete activity history.
 
 ---
 
-## 🛠️ Stack Teknologi
-* **Backend**: Laravel 13.24 (Laravel 12+ standard), PHP 8.3
-* **Database**: SQLite (Relational Database, zero-configuration)
-* **Frontend**: Blade Templating Engine, Bootstrap 5, Bootstrap Icons
-* **Desain UI**: Modern Blue & Indigo Theme, Glassmorphism, Responsive Mobile-First Layout
+## Features
+
+### Authentication
+
+- Secure Login
+- Role-based Access Control
+- Profile Management
+
+### Dashboard
+
+- Ticket Statistics
+- Recent Tickets
+- Recent Activities
+
+### Ticket Management
+
+- Create Ticket
+- Edit Ticket
+- Delete Ticket
+- Ticket Detail
+- Ticket Number Generator
+
+### Assignment
+
+- Assign Ticket to Developer
+- Update Priority
+- Update Status
+
+### Collaboration
+
+- Comment System
+- Activity Log
+- Screenshot Upload
+
+### Search & Filter
+
+- Search by Ticket Number
+- Search by Title
+- Search by Description
+- Filter by Status
+- Filter by Priority
+- Filter by Assigned Developer
+
+### Others
+
+- Pagination
+- Responsive Layout
+- Form Validation
+- Flash Message
+- Soft Delete
 
 ---
 
-## 🔑 Akun Demo Pengujian (Password: `password`)
-Untuk memudahkan pengujian dan demo selama interview, kami menyediakan tombol *autofill* di halaman login. Berikut adalah daftar akun bawaan:
-* **Admin**: `rae@ticketing.com` (Mengelola semua tiket, menunjuk Developer penanggung jawab, memantau seluruh log sistem).
-* **Developer**: `alex@ticketing.com` (Melihat tiket tugasnya, mengubah status pengerjaan, berdiskusi).
-* **QA Specialist**: `sarah@ticketing.com` (Melaporkan tiket baru, mengunggah screenshot, mengedit tiket laporannya, verifikasi selesai).
+## Tech Stack
+
+- Laravel 12
+- PHP 8.3
+- Bootstrap 5
+- MySQL
+- Blade Template Engine
+- Eloquent ORM
 
 ---
 
-## ⚡ Cara Menjalankan Project Secara Lokal
+## User Roles
 
-Ikuti langkah mudah berikut untuk menjalankan proyek di komputer Anda:
+### Administrator
 
-### 1. Kloning Project & Masuk ke Direktori
-```bash
-git clone <repository_url>
-cd issue-tracker-system
+Responsible for managing the overall ticket workflow.
+
+Permissions:
+
+- View all tickets
+- Create/Edit/Delete tickets
+- Assign developers
+- Manage ticket priority
+- Manage ticket status
+- View activity logs
+
+---
+
+### Developer
+
+Responsible for resolving assigned tickets.
+
+Permissions:
+
+- View assigned tickets
+- Update ticket status
+- Add comments
+- Update personal profile
+
+---
+
+### Quality Assurance (QA)
+
+Responsible for reporting and verifying issues.
+
+Permissions:
+
+- Create new ticket
+- Upload screenshots
+- Edit reported ticket
+- Verify bug fixes
+- Close or Reopen ticket
+- Add comments
+
+---
+
+## Demo Account
+
+### Administrator
+
+Email
+
+```
+admin@novatech.local
 ```
 
-### 2. Install Dependensi Composer
+Password
+
+```
+password
+```
+
+---
+
+### Developer
+
+Email
+
+```
+developer@novatech.local
+```
+
+Password
+
+```
+password
+```
+
+---
+
+### Quality Assurance
+
+Email
+
+```
+qa@novatech.local
+```
+
+Password
+
+```
+password
+```
+
+---
+
+## Project Structure
+
+```
+app/
+├── Http/
+├── Models/
+├── Services/
+├── Enums/
+├── Observers/
+├── Providers/
+
+database/
+├── migrations/
+├── seeders/
+├── factories/
+
+resources/
+├── views/
+├── css/
+├── js/
+
+routes/
+```
+
+---
+
+## Installation
+
 ```bash
+git clone https://github.com/username/it-ticketing-system.git
+
+cd it-ticketing-system
+
 composer install
-```
 
-### 3. Salin Konfigurasi Environment
-```bash
-copy .env.example .env
-```
-*(Pastikan `DB_CONNECTION=sqlite` aktif di file `.env` Anda. File database `database/database.sqlite` akan dibuat dan digunakan secara otomatis).*
+cp .env.example .env
 
-### 4. Generate Application Key
-```bash
 php artisan key:generate
-```
 
-### 5. Jalankan Migrasi & Database Seeder
-```bash
-php artisan migrate:fresh --seed
-```
-*(Perintah ini akan menyusun ulang tabel dan memasukkan akun demo beserta data tiket uji coba).*
+php artisan migrate --seed
 
-### 6. Buat Symbolic Link untuk Storage
-```bash
 php artisan storage:link
-```
-*(Penting agar file screenshot yang diunggah dapat dirender di halaman web).*
 
-### 7. Jalankan Server Lokal
-```bash
 php artisan serve
 ```
-Buka browser dan akses **`http://127.0.0.1:8000`** untuk masuk ke sistem.
 
 ---
 
-## 🧪 Menjalankan Unit & Feature Testing
-Untuk memverifikasi keutuhan sistem dan memastikan tidak ada error regresi:
-```bash
-php artisan test
-```
+## Future Improvements
+
+- Email Notification
+- Export PDF
+- Ticket Attachment History
+- Advanced Reporting Dashboard
+- REST API Integration
+
+---
+
+## Author
+
+Audrey Gracia Chandra
+
+Universitas Multimedia Nusantara
+
+Frontend Developer
