@@ -1,58 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IT Ticketing System - Laravel 12 & Bootstrap 5
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sebuah sistem pelaporan bug, error, dan penugasan issue (IT Ticketing) yang dirancang untuk merampingkan kolaborasi antara Quality Assurance (QA), Developer, dan Administrator dalam tim pengembangan software.
 
-## About Laravel
+Proyek ini dibangun menggunakan **Laravel 12**, **PHP 8.3**, **SQLite (Zero-Configuration)**, dan **Bootstrap 5** dengan fokus pada standar penulisan kode bersih (*Clean Code*), prinsip *SOLID*, *Form Request Validation*, dan *Row-Level Security* berbasis peran (*Role-Based Access*).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
+1. **Autentikasi & Otorisasi**: Login & logout terproteksi dengan pembatasan hak akses berbasis 3 Peran: **Admin**, **Developer**, dan **QA**.
+2. **Dashboard Dinamis**: Menampilkan statistik counter tiket (Open, In Progress, Resolved, Closed), ringkasan tiket terbaru, dan histori log aktivitas terkini yang disaring otomatis berdasarkan peran pengguna yang masuk.
+3. **CRUD Tiket dengan Auto-Number**: Manajemen siklus hidup tiket dari pelaporan awal (QA) hingga verifikasi selesai. Nomor tiket di-generate otomatis secara terenkapsulasi oleh Model dengan format: `TKT-YYYYMMDD-XXXX`.
+4. **Penyimpanan Bukti Screenshot**: Unggah bukti error berupa file gambar dengan validasi ukuran file maksimal 2MB dan pembersihan otomatis berkas sampah di storage saat tiket diperbarui atau dihapus.
+5. **Thread Diskusi (Comments)**: Kolaborasi tim secara real-time pada halaman detail tiket.
+6. **Search & Multi-Filter**: Pencarian tiket berdasarkan judul, deskripsi, atau nomor tiket, serta filter status dan prioritas yang bertahan saat berpindah halaman (*Pagination Query Retention*).
+7. **Audit Trail (Activity Log)**: Rekam jejak transparan yang mencatat detail mutasi tiket (pembuat, assignee baru, perubahan status lama ke baru, komentar) untuk keamanan audit sistem.
+8. **Pengaturan Profil**: Pengguna dapat mengubah nama lengkap, email unik, mengunggah foto profil kustom, dan memperbarui kata sandi secara aman.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Stack Teknologi
+* **Backend**: Laravel 13.24 (Laravel 12+ standard), PHP 8.3
+* **Database**: SQLite (Relational Database, zero-configuration)
+* **Frontend**: Blade Templating Engine, Bootstrap 5, Bootstrap Icons
+* **Desain UI**: Modern Blue & Indigo Theme, Glassmorphism, Responsive Mobile-First Layout
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔑 Akun Demo Pengujian (Password: `password`)
+Untuk memudahkan pengujian dan demo selama interview, kami menyediakan tombol *autofill* di halaman login. Berikut adalah daftar akun bawaan:
+* **Admin**: `rae@ticketing.com` (Mengelola semua tiket, menunjuk Developer penanggung jawab, memantau seluruh log sistem).
+* **Developer**: `alex@ticketing.com` (Melihat tiket tugasnya, mengubah status pengerjaan, berdiskusi).
+* **QA Specialist**: `sarah@ticketing.com` (Melaporkan tiket baru, mengunggah screenshot, mengedit tiket laporannya, verifikasi selesai).
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## ⚡ Cara Menjalankan Project Secara Lokal
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Ikuti langkah mudah berikut untuk menjalankan proyek di komputer Anda:
 
+### 1. Kloning Project & Masuk ke Direktori
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repository_url>
+cd issue-tracker-system
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependensi Composer
+```bash
+composer install
+```
 
-## Contributing
+### 3. Salin Konfigurasi Environment
+```bash
+copy .env.example .env
+```
+*(Pastikan `DB_CONNECTION=sqlite` aktif di file `.env` Anda. File database `database/database.sqlite` akan dibuat dan digunakan secara otomatis).*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Generate Application Key
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+### 5. Jalankan Migrasi & Database Seeder
+```bash
+php artisan migrate:fresh --seed
+```
+*(Perintah ini akan menyusun ulang tabel dan memasukkan akun demo beserta data tiket uji coba).*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 6. Buat Symbolic Link untuk Storage
+```bash
+php artisan storage:link
+```
+*(Penting agar file screenshot yang diunggah dapat dirender di halaman web).*
 
-## Security Vulnerabilities
+### 7. Jalankan Server Lokal
+```bash
+php artisan serve
+```
+Buka browser dan akses **`http://127.0.0.1:8000`** untuk masuk ke sistem.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🧪 Menjalankan Unit & Feature Testing
+Untuk memverifikasi keutuhan sistem dan memastikan tidak ada error regresi:
+```bash
+php artisan test
+```

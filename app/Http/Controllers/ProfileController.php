@@ -16,6 +16,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
+
         return view('profile.edit', compact('user'));
     }
 
@@ -32,15 +33,15 @@ class ProfileController extends Controller
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ], [
-            'name.required' => 'Nama lengkap wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah terdaftar pada pengguna lain.',
-            'password.min' => 'Password minimal terdiri dari 8 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
-            'avatar.image' => 'Foto profil harus berupa gambar.',
-            'avatar.mimes' => 'Ekstensi gambar harus jpeg, png, jpg, atau gif.',
-            'avatar.max' => 'Ukuran gambar tidak boleh melebihi 2MB.',
+            'name.required' => 'Full name is required.',
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Invalid email address format.',
+            'email.unique' => 'This email address is already taken by another user.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.confirmed' => 'Password confirmation does not match.',
+            'avatar.image' => 'Profile picture must be an image file.',
+            'avatar.mimes' => 'Supported image formats are: jpeg, png, jpg, gif.',
+            'avatar.max' => 'The image file size must not exceed 2MB.',
         ]);
 
         $user->name = $validated['name'];
@@ -63,6 +64,6 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile.edit')
-            ->with('success', 'Profil Anda berhasil diperbarui!');
+            ->with('success', 'Profile updated successfully!');
     }
 }

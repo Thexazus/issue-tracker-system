@@ -19,12 +19,10 @@ class UpdateTicketRequest extends FormRequest
         }
 
         if ($user->isQA()) {
-            // QA can only edit tickets they reported
             return $ticket->reporter_id === $user->id;
         }
 
         if ($user->isDeveloper()) {
-            // Developers can only update tickets assigned to them
             return $ticket->assigned_to_id === $user->id;
         }
 
@@ -38,14 +36,12 @@ class UpdateTicketRequest extends FormRequest
     {
         $user = auth()->user();
 
-        // If Developer, they can only change status
         if ($user->isDeveloper()) {
             return [
                 'status' => ['required', 'in:open,in_progress,resolved,closed'],
             ];
         }
 
-        // If Admin or QA
         $rules = [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -54,7 +50,6 @@ class UpdateTicketRequest extends FormRequest
             'screenshot' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
 
-        // Only Admin can assign/reassign tickets
         if ($user->isAdmin()) {
             $rules['assigned_to_id'] = ['nullable', 'exists:users,id'];
         }
@@ -68,17 +63,17 @@ class UpdateTicketRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Judul tiket wajib diisi.',
-            'title.max' => 'Judul tiket tidak boleh lebih dari 255 karakter.',
-            'description.required' => 'Deskripsi tiket wajib diisi.',
-            'priority.required' => 'Prioritas tiket wajib dipilih.',
-            'priority.in' => 'Prioritas yang dipilih tidak valid.',
-            'status.required' => 'Status tiket wajib dipilih.',
-            'status.in' => 'Status yang dipilih tidak valid.',
-            'screenshot.image' => 'File screenshot harus berupa gambar.',
-            'screenshot.mimes' => 'Format screenshot harus jpeg, png, jpg, atau gif.',
-            'screenshot.max' => 'Ukuran screenshot tidak boleh lebih dari 2MB.',
-            'assigned_to_id.exists' => 'Developer yang ditunjuk tidak valid.',
+            'title.required' => 'Ticket title is required.',
+            'title.max' => 'Ticket title may not exceed 255 characters.',
+            'description.required' => 'Ticket description is required.',
+            'priority.required' => 'Ticket priority is required.',
+            'priority.in' => 'Selected priority is invalid.',
+            'status.required' => 'Ticket status is required.',
+            'status.in' => 'Selected status is invalid.',
+            'screenshot.image' => 'The screenshot file must be an image.',
+            'screenshot.mimes' => 'The screenshot format must be jpeg, png, jpg, or gif.',
+            'screenshot.max' => 'The screenshot size may not exceed 2MB.',
+            'assigned_to_id.exists' => 'Selected developer is invalid.',
         ];
     }
 }

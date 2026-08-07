@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'ticket_number',
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
     'priority',
     'screenshot',
     'reporter_id',
-    'assigned_to_id'
+    'assigned_to_id',
 ])]
 class Ticket extends Model
 {
@@ -37,11 +37,11 @@ class Ticket extends Model
             $sequence = 1;
             if ($latestTicket) {
                 $parts = explode('-', $latestTicket->ticket_number);
-                $lastSequence = (int)end($parts);
+                $lastSequence = (int) end($parts);
                 $sequence = $lastSequence + 1;
             }
 
-            $ticket->ticket_number = 'TKT-' . $date . '-' . str_pad($sequence, 4, '0', STR_PAD_LEFT);
+            $ticket->ticket_number = 'TKT-'.$date.'-'.str_pad($sequence, 4, '0', STR_PAD_LEFT);
         });
     }
 

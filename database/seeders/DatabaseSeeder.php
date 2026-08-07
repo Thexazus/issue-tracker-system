@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,38 +12,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Seed Users for each role
+        // 1. Seed Users for each role with realistic names
         $admin = User::create([
-            'name' => 'System Admin',
-            'email' => 'admin@ticketing.com',
+            'name' => 'Raecia',
+            'email' => 'rae@ticketing.com',
             'password' => bcrypt('password'),
             'role' => 'admin',
         ]);
 
         $dev1 = User::create([
-            'name' => 'Developer One',
-            'email' => 'dev1@ticketing.com',
+            'name' => 'Alex Dev',
+            'email' => 'alex@ticketing.com',
             'password' => bcrypt('password'),
             'role' => 'developer',
         ]);
 
         $dev2 = User::create([
-            'name' => 'Developer Two',
-            'email' => 'dev2@ticketing.com',
+            'name' => 'John Dev',
+            'email' => 'john@ticketing.com',
             'password' => bcrypt('password'),
             'role' => 'developer',
         ]);
 
         $qa1 = User::create([
-            'name' => 'QA Specialist One',
-            'email' => 'qa1@ticketing.com',
+            'name' => 'Sarah QA',
+            'email' => 'sarah@ticketing.com',
             'password' => bcrypt('password'),
             'role' => 'qa',
         ]);
 
         $qa2 = User::create([
-            'name' => 'QA Specialist Two',
-            'email' => 'qa2@ticketing.com',
+            'name' => 'Emily QA',
+            'email' => 'emily@ticketing.com',
             'password' => bcrypt('password'),
             'role' => 'qa',
         ]);
@@ -65,7 +64,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'in_progress',
             'priority' => 'medium',
             'reporter_id' => $qa2->id,
-            'assigned_to_id' => $dev1->id, // Assigned to Dev 1
+            'assigned_to_id' => $dev1->id, // Assigned to Alex
         ]);
 
         $ticket3 = \App\Models\Ticket::create([
@@ -74,7 +73,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'open',
             'priority' => 'critical',
             'reporter_id' => $qa1->id,
-            'assigned_to_id' => $dev2->id, // Assigned to Dev 2
+            'assigned_to_id' => $dev2->id, // Assigned to John
         ]);
 
         // 3. Create sample activity logs
@@ -82,28 +81,28 @@ class DatabaseSeeder extends Seeder
             'ticket_id' => $ticket1->id,
             'user_id' => $qa1->id,
             'action' => 'created',
-            'description' => "QA Specialist One created ticket {$ticket1->ticket_number}",
+            'description' => "Sarah QA created ticket {$ticket1->ticket_number}",
         ]);
 
         \App\Models\ActivityLog::create([
             'ticket_id' => $ticket2->id,
             'user_id' => $qa2->id,
             'action' => 'created',
-            'description' => "QA Specialist Two created ticket {$ticket2->ticket_number}",
+            'description' => "Emily QA created ticket {$ticket2->ticket_number}",
         ]);
 
         \App\Models\ActivityLog::create([
             'ticket_id' => $ticket2->id,
             'user_id' => $admin->id,
             'action' => 'assigned',
-            'description' => "System Admin assigned ticket {$ticket2->ticket_number} to Developer One",
+            'description' => "Raecia assigned ticket {$ticket2->ticket_number} to Alex Dev",
         ]);
 
         \App\Models\ActivityLog::create([
             'ticket_id' => $ticket2->id,
             'user_id' => $dev1->id,
             'action' => 'status_changed',
-            'description' => "Developer One updated status of {$ticket2->ticket_number} to in_progress",
+            'description' => "Alex Dev updated status of {$ticket2->ticket_number} to in_progress",
             'changes' => ['old' => 'open', 'new' => 'in_progress'],
         ]);
 

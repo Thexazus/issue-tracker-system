@@ -1,57 +1,57 @@
 @extends('layouts.app')
 
-@section('title', 'Log Aktivitas Sistem - IT Ticketing System')
-@section('page_title', 'Log Aktivitas')
+@section('title', 'Activity Logs - IT Ticketing System')
+@section('page_title', 'Activity Logs')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="fw-bold mb-0">Log Aktivitas Sistem</h4>
-        <p class="text-muted small mb-0">Histori rekam jejak audit semua mutasi tiket dan interaksi tim</p>
+        <h4 class="fw-bold mb-0">Activity Logs</h4>
+        <p class="text-muted small mb-0">System audit trail of all ticket modifications and team interactions</p>
     </div>
 </div>
 
 <!-- Filter Card -->
-<div class="card-custom mb-4">
+<div class="card-custom card-custom-hoverable mb-4">
     <form action="{{ route('activity-logs.index') }}" method="GET" class="row g-3 align-items-center">
         <div class="col-md-4">
-            <label for="action" class="form-label fw-semibold text-muted small mb-1">Filter Berdasarkan Aksi</label>
+            <label for="action" class="form-label fw-semibold text-muted small mb-1">Filter by Action</label>
             <select name="action" id="action" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Semua Aksi --</option>
-                <option value="created" {{ request('action') === 'created' ? 'selected' : '' }}>Tiket Dibuat (Created)</option>
-                <option value="assigned" {{ request('action') === 'assigned' ? 'selected' : '' }}>Penugasan Tiket (Assigned)</option>
-                <option value="status_changed" {{ request('action') === 'status_changed' ? 'selected' : '' }}>Perubahan Status (Status Changed)</option>
-                <option value="priority_changed" {{ request('action') === 'priority_changed' ? 'selected' : '' }}>Perubahan Prioritas (Priority Changed)</option>
-                <option value="commented" {{ request('action') === 'commented' ? 'selected' : '' }}>Komentar Ditambahkan (Commented)</option>
-                <option value="deleted" {{ request('action') === 'deleted' ? 'selected' : '' }}>Tiket Dihapus (Deleted)</option>
+                <option value="">-- All Actions --</option>
+                <option value="created" {{ request('action') === 'created' ? 'selected' : '' }}>Ticket Created</option>
+                <option value="assigned" {{ request('action') === 'assigned' ? 'selected' : '' }}>Ticket Assigned</option>
+                <option value="status_changed" {{ request('action') === 'status_changed' ? 'selected' : '' }}>Status Changed</option>
+                <option value="priority_changed" {{ request('action') === 'priority_changed' ? 'selected' : '' }}>Priority Changed</option>
+                <option value="commented" {{ request('action') === 'commented' ? 'selected' : '' }}>Comment Added</option>
+                <option value="deleted" {{ request('action') === 'deleted' ? 'selected' : '' }}>Ticket Deleted</option>
             </select>
         </div>
         <div class="col-md-2 mt-md-4 d-grid">
             <a href="{{ route('activity-logs.index') }}" class="btn btn-outline-secondary btn-sm py-2">
-                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filter
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filters
             </a>
         </div>
     </form>
 </div>
 
 <!-- Log List Card -->
-<div class="card-custom p-0 overflow-hidden">
+<div class="card-custom card-custom-hoverable p-0 overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
             <thead class="table-light border-bottom">
                 <tr>
-                    <th class="ps-4 py-3" style="width: 180px;">Waktu Kejadian</th>
-                    <th class="py-3" style="width: 180px;">Pelaku (User)</th>
-                    <th class="py-3" style="width: 140px;">Kategori Aksi</th>
-                    <th class="py-3">Deskripsi Log</th>
-                    <th class="py-3" style="width: 150px;">Tiket Terkait</th>
+                    <th class="ps-4 py-3" style="width: 180px;">Timestamp</th>
+                    <th class="py-3" style="width: 180px;">Actor (User)</th>
+                    <th class="py-3" style="width: 140px;">Action Category</th>
+                    <th class="py-3">Log Description</th>
+                    <th class="py-3" style="width: 150px;">Related Ticket</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($logs as $log)
                     <tr>
                         <td class="ps-4 text-muted" style="font-size: 0.85rem;">
-                            {{ $log->created_at->translatedFormat('d M Y, H:i:s') }}
+                            {{ $log->created_at->format('M d, Y H:i:s') }}
                             <div class="small opacity-75">({{ $log->created_at->diffForHumans() }})</div>
                         </td>
                         <td>
@@ -78,11 +78,11 @@
                             <div class="text-dark fw-medium">{{ $log->description }}</div>
                             @if($log->changes)
                                 <div class="bg-light p-2 rounded mt-1 border" style="font-size: 0.75rem; max-width: 500px; line-height: 1.4;">
-                                    <span class="text-muted fw-semibold d-block mb-1">State Mutasi Data:</span>
+                                    <span class="text-muted fw-semibold d-block mb-1">Data Mutation Details:</span>
                                     <div class="d-flex align-items-center">
-                                        <code class="text-danger bg-danger-subtle px-1 rounded">{{ is_array($log->changes['old']) ? json_encode($log->changes['old']) : $log->changes['old'] ?: 'NULL' }}</code>
+                                        <code class="text-danger bg-danger-subtle px-1 rounded">{{ is_array($log->changes['old']) ? json_encode($log->changes['old']) : ($log->changes['old'] ?: 'NULL') }}</code>
                                         <span class="mx-2 text-muted">&rarr;</span>
-                                        <code class="text-success bg-success-subtle px-1 rounded">{{ is_array($log->changes['new']) ? json_encode($log->changes['new']) : $log->changes['new'] ?: 'NULL' }}</code>
+                                        <code class="text-success bg-success-subtle px-1 rounded">{{ is_array($log->changes['new']) ? json_encode($log->changes['new']) : ($log->changes['new'] ?: 'NULL') }}</code>
                                     </div>
                                 </div>
                             @endif
@@ -93,7 +93,7 @@
                                     <i class="bi bi-ticket-perforated me-1"></i>{{ $log->ticket->ticket_number }}
                                 </a>
                             @else
-                                <span class="text-muted small italic"><i class="bi bi-trash3 me-1"></i>Tiket Dihapus</span>
+                                <span class="text-muted small italic"><i class="bi bi-trash3 me-1"></i>Ticket Deleted</span>
                             @endif
                         </td>
                     </tr>
@@ -101,8 +101,8 @@
                     <tr>
                         <td colspan="5" class="text-center py-5 text-muted">
                             <div class="mb-3"><i class="bi bi-journal-x fs-1 text-muted opacity-50"></i></div>
-                            <h5>Tidak ada log aktivitas ditemukan</h5>
-                            <p class="small text-muted mb-0">Semua aktivitas sistem yang sesuai dengan filter akan dicatat di sini.</p>
+                            <h5>No activity logs found</h5>
+                            <p class="small text-muted mb-0">All matching system activities will be recorded here.</p>
                         </td>
                     </tr>
                 @endforelse
@@ -114,7 +114,7 @@
     @if($logs->hasPages())
         <div class="px-4 py-3 border-top bg-light d-flex align-items-center justify-content-between">
             <div class="small text-muted">
-                Menampilkan {{ $logs->firstItem() }} - {{ $logs->lastItem() }} dari {{ $logs->total() }} log
+                Showing {{ $logs->firstItem() }} - {{ $logs->lastItem() }} of {{ $logs->total() }} logs
             </div>
             <div>
                 {{ $logs->links('pagination::bootstrap-5') }}

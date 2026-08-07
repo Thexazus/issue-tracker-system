@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ticket;
 use App\Models\ActivityLog;
-use Illuminate\Http\Request;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -23,15 +22,15 @@ class DashboardController extends Controller
         // Enforce role-based boundaries on dashboard stats & listings
         if ($user->isDeveloper()) {
             $ticketQuery->where('assigned_to_id', $user->id);
-            $logQuery->where(function($q) use ($user) {
-                $q->whereHas('ticket', function($subQ) use ($user) {
+            $logQuery->where(function ($q) use ($user) {
+                $q->whereHas('ticket', function ($subQ) use ($user) {
                     $subQ->where('assigned_to_id', $user->id);
                 })->orWhere('user_id', $user->id);
             });
         } elseif ($user->isQA()) {
             $ticketQuery->where('reporter_id', $user->id);
-            $logQuery->where(function($q) use ($user) {
-                $q->whereHas('ticket', function($subQ) use ($user) {
+            $logQuery->where(function ($q) use ($user) {
+                $q->whereHas('ticket', function ($subQ) use ($user) {
                     $subQ->where('reporter_id', $user->id);
                 })->orWhere('user_id', $user->id);
             });

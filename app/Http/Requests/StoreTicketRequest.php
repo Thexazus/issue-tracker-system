@@ -11,7 +11,6 @@ class StoreTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Only QA and Admin can report/create tickets
         return auth()->user()->isQA() || auth()->user()->isAdmin();
     }
 
@@ -24,7 +23,7 @@ class StoreTicketRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'priority' => ['required', 'in:low,medium,high,critical'],
-            'screenshot' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Max 2MB image
+            'screenshot' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -34,14 +33,14 @@ class StoreTicketRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Judul tiket wajib diisi.',
-            'title.max' => 'Judul tiket tidak boleh lebih dari 255 karakter.',
-            'description.required' => 'Deskripsi tiket wajib diisi.',
-            'priority.required' => 'Prioritas tiket wajib dipilih.',
-            'priority.in' => 'Prioritas yang dipilih tidak valid.',
-            'screenshot.image' => 'File screenshot harus berupa gambar.',
-            'screenshot.mimes' => 'Format screenshot harus jpeg, png, jpg, atau gif.',
-            'screenshot.max' => 'Ukuran screenshot tidak boleh lebih dari 2MB.',
+            'title.required' => 'Ticket title is required.',
+            'title.max' => 'Ticket title may not exceed 255 characters.',
+            'description.required' => 'Ticket description is required.',
+            'priority.required' => 'Ticket priority is required.',
+            'priority.in' => 'Selected priority is invalid.',
+            'screenshot.image' => 'The screenshot file must be an image.',
+            'screenshot.mimes' => 'The screenshot format must be jpeg, png, jpg, or gif.',
+            'screenshot.max' => 'The screenshot size may not exceed 2MB.',
         ];
     }
 }

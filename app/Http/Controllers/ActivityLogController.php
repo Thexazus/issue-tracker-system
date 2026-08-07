@@ -14,20 +14,20 @@ class ActivityLogController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        
+
         // Eager load relations to avoid N+1 queries
         $query = ActivityLog::with(['user', 'ticket'])->latest();
 
         // Enforce role-based access limits on log visibility
         if ($user->isDeveloper()) {
-            $query->where(function($q) use ($user) {
-                $q->whereHas('ticket', function($subQ) use ($user) {
+            $query->where(function ($q) use ($user) {
+                $q->whereHas('ticket', function ($subQ) use ($user) {
                     $subQ->where('assigned_to_id', $user->id);
                 })->orWhere('user_id', $user->id);
             });
         } elseif ($user->isQA()) {
-            $query->where(function($q) use ($user) {
-                $q->whereHas('ticket', function($subQ) use ($user) {
+            $query->where(function ($q) use ($user) {
+                $q->whereHas('ticket', function ($subQ) use ($user) {
                     $subQ->where('reporter_id', $user->id);
                 })->orWhere('user_id', $user->id);
             });

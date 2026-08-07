@@ -12,13 +12,13 @@ class RoleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      * @param  string  ...$roles
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        if (! Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
         }
 
         $user = Auth::user();
@@ -29,6 +29,6 @@ class RoleMiddleware
         }
 
         // Standard 403 HTTP response for unauthorized access
-        abort(403, 'Anda tidak memiliki hak akses untuk mengakses halaman ini.');
+        abort(403, 'You do not have permission to access this page.');
     }
 }

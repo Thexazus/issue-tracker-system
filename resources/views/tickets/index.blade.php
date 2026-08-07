@@ -1,36 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Tiket - IT Ticketing System')
-@section('page_title', 'Tiket Issue')
+@section('title', 'Ticket List - IT Ticketing System')
+@section('page_title', 'Tickets')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="fw-bold mb-0">Daftar Tiket Issue</h4>
-        <p class="text-muted small mb-0">Daftar laporan bug, error, dan revisi dari QA</p>
+        <h4 class="fw-bold mb-0">Ticket List</h4>
+        <p class="text-muted small mb-0">List of bug reports, errors, and revises from QA</p>
     </div>
     @if(Auth::user()->isQA() || Auth::user()->isAdmin())
         <a href="{{ route('tickets.create') }}" class="btn btn-primary d-flex align-items-center">
-            <i class="bi bi-plus-lg me-2"></i> Laporkan Issue Baru
+            <i class="bi bi-plus-lg me-2"></i> Report New Issue
         </a>
     @endif
 </div>
 
 <!-- Search & Filter Card -->
-<div class="card-custom mb-4">
+<div class="card-custom card-custom-hoverable mb-4">
     <form action="{{ route('tickets.index') }}" method="GET" class="row g-3">
         <!-- Search Input -->
         <div class="col-md-5">
             <div class="input-group">
                 <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-search"></i></span>
-                <input type="text" name="search" class="form-control border-start-0" placeholder="Cari nomor, judul, atau deskripsi tiket..." value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control border-start-0" placeholder="Search by ticket ID, title, or description..." value="{{ request('search') }}">
             </div>
         </div>
 
         <!-- Filter Status -->
         <div class="col-md-3">
             <select name="status" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Semua Status --</option>
+                <option value="">-- All Statuses --</option>
                 <option value="open" {{ request('status') === 'open' ? 'selected' : '' }}>Open</option>
                 <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                 <option value="resolved" {{ request('status') === 'resolved' ? 'selected' : '' }}>Resolved</option>
@@ -41,7 +41,7 @@
         <!-- Filter Priority -->
         <div class="col-md-3">
             <select name="priority" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Semua Prioritas --</option>
+                <option value="">-- All Priorities --</option>
                 <option value="low" {{ request('priority') === 'low' ? 'selected' : '' }}>Low</option>
                 <option value="medium" {{ request('priority') === 'medium' ? 'selected' : '' }}>Medium</option>
                 <option value="high" {{ request('priority') === 'high' ? 'selected' : '' }}>High</option>
@@ -49,9 +49,9 @@
             </select>
         </div>
 
-        <!-- Search button & Reset -->
+        <!-- Reset Button -->
         <div class="col-md-1 d-grid">
-            <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary" title="Reset Filter">
+            <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary" title="Reset Filters">
                 <i class="bi bi-arrow-counterclockwise"></i>
             </a>
         </div>
@@ -59,18 +59,18 @@
 </div>
 
 <!-- Table Card -->
-<div class="card-custom p-0 overflow-hidden">
+<div class="card-custom card-custom-hoverable p-0 overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light border-bottom">
                 <tr>
-                    <th class="ps-4 py-3" style="width: 150px;">Nomor Tiket</th>
-                    <th class="py-3">Judul Issue</th>
-                    <th class="py-3" style="width: 120px;">Prioritas</th>
+                    <th class="ps-4 py-3" style="width: 150px;">Ticket ID</th>
+                    <th class="py-3">Issue Title</th>
+                    <th class="py-3" style="width: 120px;">Priority</th>
                     <th class="py-3" style="width: 140px;">Status</th>
                     <th class="py-3">Reporter</th>
                     <th class="py-3">Assignee</th>
-                    <th class="py-3 text-end pe-4" style="width: 120px;">Aksi</th>
+                    <th class="py-3 text-end pe-4" style="width: 120px;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,15 +105,15 @@
                                     <span class="small text-dark">{{ $ticket->assignee->name }}</span>
                                 </div>
                             @else
-                                <span class="text-muted small italic"><i class="bi bi-person-dash me-1"></i>Belum ditunjuk</span>
+                                <span class="text-muted small italic"><i class="bi bi-person-dash me-1"></i>Unassigned</span>
                             @endif
                         </td>
                         <td class="text-end pe-4">
-                            <a href="{{ route('tickets.show', $ticket) }}" class="btn btn-sm btn-light border" title="Detail Tiket">
+                            <a href="{{ route('tickets.show', $ticket) }}" class="btn btn-sm btn-light border" title="Ticket Details">
                                 <i class="bi bi-eye text-primary"></i>
                             </a>
                             @if(Auth::user()->isAdmin() || (Auth::user()->isQA() && $ticket->reporter_id === Auth::id()) || (Auth::user()->isDeveloper() && $ticket->assigned_to_id === Auth::id()))
-                                <a href="{{ route('tickets.edit', $ticket) }}" class="btn btn-sm btn-light border ms-1" title="Edit Tiket">
+                                <a href="{{ route('tickets.edit', $ticket) }}" class="btn btn-sm btn-light border ms-1" title="Edit Ticket">
                                     <i class="bi bi-pencil-square text-success"></i>
                                 </a>
                             @endif
@@ -123,8 +123,8 @@
                     <tr>
                         <td colspan="7" class="text-center py-5 text-muted">
                             <div class="mb-3"><i class="bi bi-ticket-detailed fs-1 text-primary-subtle"></i></div>
-                            <h5>Tidak ada tiket ditemukan</h5>
-                            <p class="small text-muted mb-0">Coba ganti filter pencarian atau laporkan issue baru.</p>
+                            <h5>No tickets found</h5>
+                            <p class="small text-muted mb-0">Try changing search filters or report a new issue.</p>
                         </td>
                     </tr>
                 @endforelse
@@ -136,7 +136,7 @@
     @if($tickets->hasPages())
         <div class="px-4 py-3 border-top bg-light d-flex align-items-center justify-content-between">
             <div class="small text-muted">
-                Menampilkan {{ $tickets->firstItem() }} - {{ $tickets->lastItem() }} dari {{ $tickets->total() }} tiket
+                Showing {{ $tickets->firstItem() }} - {{ $tickets->lastItem() }} of {{ $tickets->total() }} tickets
             </div>
             <div>
                 {{ $tickets->links('pagination::bootstrap-5') }}

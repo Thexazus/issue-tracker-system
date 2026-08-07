@@ -16,6 +16,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
+
         return view('auth.login');
     }
 
@@ -27,16 +28,14 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            // Regenerate session to prevent session fixation attacks
             $request->session()->regenerate();
 
             return redirect()->intended(route('dashboard'))
-                ->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
+                ->with('success', 'Welcome back, '.Auth::user()->name.'!');
         }
 
-        // Return error back to form if login fails
         return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
+            'email' => 'The credentials you entered do not match our records.',
         ])->onlyInput('email');
     }
 
@@ -47,11 +46,10 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        // Invalidate and regenerate token to prevent reuse
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login')
-            ->with('success', 'Anda telah berhasil keluar dari sistem.');
+            ->with('success', 'You have been logged out successfully.');
     }
 }
