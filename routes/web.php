@@ -36,3 +36,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+// Temporary deployment setup routes (access once, then delete for security)
+Route::get('/run-migration-deploy', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--seed' => true,
+            '--force' => true,
+        ]);
+        return "Database migrated & seeded successfully!";
+    } catch (\Exception $e) {
+        return "Error migrating database: " . $e->getMessage();
+    }
+});
+
+Route::get('/create-storage-link', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return "Storage link created successfully!";
+    } catch (\Exception $e) {
+        return "Error creating storage link: " . $e->getMessage();
+    }
+});
+
