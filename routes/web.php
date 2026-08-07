@@ -52,8 +52,18 @@ Route::get('/run-migration-deploy', function () {
 
 Route::get('/create-storage-link', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return "Storage link created successfully!";
+        $target = storage_path('app/public');
+        $link = public_path('storage');
+
+        if (file_exists($link)) {
+            return "The 'public/storage' link already exists.";
+        }
+
+        if (symlink($target, $link)) {
+            return "Storage link created successfully using native PHP symlink!";
+        }
+
+        return "Failed to create storage link.";
     } catch (\Exception $e) {
         return "Error creating storage link: " . $e->getMessage();
     }
